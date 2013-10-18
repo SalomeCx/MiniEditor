@@ -1,7 +1,5 @@
 package receiver;
 
-
-//Let's test git 
 /** 
  * @author Vincente NATTA & Salome COAVOUX
  * @version 0.1
