@@ -23,20 +23,19 @@ public class TestEditorEngine {
 		
 		// Le clipboard de depart est bien vide
 		e.copy();
-		assertEquals("Copie vide de depart", e.c, "");
+		assertEquals("Copie vide de depart", e.c.getSc(), null);
 		
 		// Copie normale
 		e.select(0, 4);
 		e.copy();
-		assertEquals("Non-copie", e.c, "good");
-		assertEquals("Non-copie", e.b, "good morning");
+		assertEquals("Non-copie", e.c.getSc(), "good");
+		assertEquals("Non-copie", e.b.toString(), "good morning");
 		
 		// Copie vide: on ne change pas la valeur precedente du clipboard
 		e.select(4, 0);
 		e.copy();
-		assertEquals("Copie vide", e.c, "good");
-		
-		
+		assertEquals("Copie vide", e.c.getSc(), "good");
+			
 	}
 
 	@Test
@@ -44,22 +43,22 @@ public class TestEditorEngine {
 		e.b.append("are you my mommy");
 		
 		// Coupe vide
+		e.select(0, 0);
 		e.cut();
-		assertEquals("Coupe vide de depart", e.c, "");
-		assertEquals("Coupe vide de depart", e.b, "are you my mommy");
+		assertEquals("Coupe vide de depart", e.c.getSc(), null);
+		assertEquals("Coupe vide de depart", e.b.toString(), "are you my mommy");
 		
 		// Coupe normale
 		e.select(0, 11);
 		e.cut();
-		assertEquals("Coupe normale", e.c, "are you my ");
-		assertEquals("Coupe normale", e.b, "mommy");
+		assertEquals("Coupe normale", e.c.getSc(), "are you my ");
+		assertEquals("Coupe normale", e.b.toString(), "mommy");
 		
 		// Coupe vide: on ne change pas la valeur precedente du clipboard (dixit: eclipse, gedit & sublime text)
 		e.select(4, 0);
 		e.cut();
-		assertEquals("Coupe vide", e.b, "mommy");
-		assertEquals("Coupe vide", e.c, "are you my ");
-		
+		assertEquals("Coupe vide", e.b.toString(), "mommy");
+		assertEquals("Coupe vide", e.c.getSc(), "are you my ");	
 
 	}
 
@@ -72,15 +71,13 @@ public class TestEditorEngine {
 		e.cut();
 		e.select(7, 0);
 		e.paste();
-		assertEquals("Coller sans ecraser", e.b, "girafe koala mais pas demain");
-		assertEquals("Coller: clipboard?", e.c, "koala");
+		assertEquals("Coller sans ecraser", e.b.toString(), "girafe koala mais pas demain");
+		assertEquals("Coller: clipboard?", e.c.getSc(), "koala ");
 		
 		// Coller en ecrasant
-		e.select(13, 4);
+		e.select(13, 5);
 		e.paste();
-		assertEquals("Coller et ecraser", e.b, "girafe koala koala pas demain");
-		
-		
+		assertEquals("Coller et ecraser", e.b.toString(), "girafe koala koala pas demain");
 	}
 
 	@Test
@@ -88,18 +85,19 @@ public class TestEditorEngine {
 		e.b.append("tests Insertion");
 		
 		// Insertion sans selection = au debut du buffer
+		e.select(0, 0);
 		e.insert("4");
-		assertEquals("Insertion sans selection", e.b, "4tests Insertion");
+		assertEquals("Insertion sans selection", e.b.toString(), "4tests Insertion");
 		
 		// Insertion en supprimant du texte au debut
 		e.select(0, 6);
 		e.insert("42");
-		assertEquals("Selection depuis le debut", e.b, "42 Insertion");
+		assertEquals("Selection depuis le debut", e.b.toString(), "42 Insertion");
 		
 		// Insertion en supprimant du texte au milieu
 		e.select(3, 2);
 		e.insert("ex");
-		assertEquals("Selection dans le milieu", e.b, "42 exsertion");
+		assertEquals("Selection dans le milieu", e.b.toString(), "42 exsertion");
 		
 	}
 

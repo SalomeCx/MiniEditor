@@ -5,7 +5,7 @@ public class Clipboard {
 	private String sc;
 
 	public Clipboard() {
-		this.sc = "";
+		this.sc = null;
 	}
 
 	// Ceci aurait aussi du etre un pattern delegate, mais String est cool en Java, donc pas besoin
